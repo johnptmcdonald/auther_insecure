@@ -1,5 +1,6 @@
 # project-specific folders and files
 build/
+public/
 
 # installed packages (better: `npm install` / `bower install`)
 node_modules

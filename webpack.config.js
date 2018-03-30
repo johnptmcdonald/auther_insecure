@@ -1,26 +1,19 @@
-
-'use strict';
-
-var webpack = require('webpack');
-
 module.exports = {
-  entry: './browser/js/app.js',
+  // babel-polyfill enables async-await in our client js
+  entry: ['babel-polyfill', './browser/js/app.js'],
+  mode: 'development',
   output: {
     path: __dirname,
-    filename: './build/bundle.js'
+    filename: './public/bundle.js'
   },
   context: __dirname,
-  devtool: 'source-map',
   module: {
-    loaders: [
+    rules: [
       {
-        test: /jsx?$/,
+        test: /\.jsx?$/,
         exclude: /(node_modules|bower_components)/,
-        loader: 'babel',
-        query: {
-          presets: ['react', 'es2015']
-        }
+        loader: 'babel-loader'
       }
     ]
   }
-};
+}
