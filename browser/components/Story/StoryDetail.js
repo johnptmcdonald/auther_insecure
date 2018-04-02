@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 import ContentEditable from 'react-contenteditable'
-import { updateStory, fetchStory } from '../../redux/stories'
+import { updateStory } from '../../redux/stories'
 import { Link } from 'react-router-dom'
 
 /* -----------------    COMPONENT     ------------------ */
@@ -37,17 +37,17 @@ class StoryDetail extends Component {
         <ul className='list-inline large-font'>
           <li>
             <input
-              readOnly={ !authorized }
+              readOnly={!authorized}
               className='form-like large-font'
               value={story.title}
               onChange={evt => this.onStoryUpdate({ title: evt.target.value })}
-              contentEditable={ !!authorized }
+              contentEditable={!!authorized}
             />
           </li>
           <li><span className='muted'>by</span></li>
           <li>
-            { currentUser.isAdmin ?
-              <select
+            { currentUser.isAdmin
+              ? <select
                 value={story.author_id}
                 onChange={evt => this.onStoryUpdate({ author_id: evt.target.value })}>
                 {
@@ -61,12 +61,14 @@ class StoryDetail extends Component {
           </li>
         </ul>
         <br />
-        <ContentEditable
-          disabled={ !authorized }
-          placeholder='(text here)'
-          html={this.renderRawHTML()}
-          onChange={evt => this.onStoryUpdate({ paragraphs: evt.target.value })}
-        />
+        {
+          <ContentEditable
+            disabled={!authorized}
+            placeholder='(text here)'
+            html={this.renderRawHTML()}
+            onChange={evt => this.onStoryUpdate({ paragraphs: evt.target.value })}
+          />
+        }
       </div>
     )
   }
@@ -77,7 +79,7 @@ class StoryDetail extends Component {
     let storyHTML = ''
 
     if (story && story.paragraphs && story.paragraphs.length) {
-      storyHTML = story.paragraphs.join('<br>')
+      storyHTML = story.paragraphs
     }
 
     return storyHTML
@@ -88,7 +90,7 @@ class StoryDetail extends Component {
     const {story} = this.state
     // this is probably pretty fragile
     if (storyUpdateObj.paragraphs) {
-      storyUpdateObj.paragraphs = storyUpdateObj.paragraphs.split('<br>')
+      storyUpdateObj.paragraphs = storyUpdateObj.paragraphs
     }
     this.setState({
       story: Object.assign(story, storyUpdateObj)

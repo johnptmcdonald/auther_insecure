@@ -5,12 +5,11 @@ const db = require('./_db')
 const Story = db.define('story', {
   title: {
     type: Sequelize.STRING,
-    allowNull: false,
-    unique: true
+    allowNull: false
   },
   paragraphs: {
-    type: Sequelize.ARRAY(Sequelize.TEXT),
-    defaultValue: []
+    type: Sequelize.TEXT,
+    defaultValue: ''
   }
 }, {
   scopes: {

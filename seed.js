@@ -6,8 +6,8 @@ const db = require('./server/db')
 const User = require('./server/db/user.model')
 const Story = require('./server/db/story.model')
 
-const numUsers = 100
-const numStories = 500
+const numUsers = 50
+const numStories = 100
 
 const emails = chance.unique(chance.email, numUsers)
 
@@ -54,14 +54,10 @@ function randTitle () {
 
 function randStory (createdUsers) {
   const user = chance.pick(createdUsers)
-  const numPars = chance.natural({
-    min: 3,
-    max: 20
-  })
   return Story.build({
     author_id: user.id,
     title: randTitle(),
-    paragraphs: chance.n(chance.paragraph, numPars)
+    paragraphs: chance.paragraph({sentences: 10})
   })
 }
 
