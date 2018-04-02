@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import StoryItem from './StoryItem'
 import { addStory } from '../../redux/stories'
@@ -17,19 +16,15 @@ class StoryList extends Component {
 
     this.filterStory = this.filterStory.bind(this)
     this.renderStorySearch = this.renderStorySearch.bind(this)
-    this.renderNewStoryWidget = this.renderNewStoryWidget.bind(this)
-    this.onSubmit = this.onSubmit.bind(this)
   }
 
   render () {
-    const { currentUser } = this.props
     return (
       <div className='container'>
         { this.renderStorySearch() }
         <br />
 
         <ul className='list-group'>
-          { currentUser.id && this.renderNewStoryWidget() }
           { this.props.stories
             .filter(this.filterStory)
             .map(story => <StoryItem story={story} key={story.id} />)
@@ -68,43 +63,6 @@ class StoryList extends Component {
     )
   }
 
-  renderNewStoryWidget () {
-    const { currentUser } = this.props
-    return (
-      <form onSubmit={this.onSubmit} className='list-group-item story-item'>
-        <ul className='list-inline'>
-          <li>
-            <input
-              name='title'
-              type='text'
-              className='form-like large-font'
-              placeholder='Story Title'
-            />
-          </li>
-          <li>
-            <span>by</span>
-          </li>
-          <li>
-            { currentUser.isAdmin ?
-              <select name='authorId' defaultValue='' required>
-                <option value='' disabled>(select an author)</option>
-                {
-                  this.props.users.map(user => (
-                    <option key={user.id} value={user.id}>{user.name}</option>
-                  ))
-                }
-              </select>
-              : <Link to={`/users/${currentUser.id}`}>{currentUser.name || currentUser.email}</Link>
-            }
-          </li>
-        </ul>
-        <button type='submit' className='btn btn-warning btn-xs pull-right'>
-          <span className='glyphicon glyphicon-plus' />
-        </button>
-      </form>
-    )
-  }
-
   filterStory (story) {
     // this is necessary as users can be deleted and their stories are orphaned
     const authorName = (story && story.author) ? story.author.name : ''
@@ -113,24 +71,11 @@ class StoryList extends Component {
 
     return titleMatch.test(story.title) && nameMatch.test(authorName)
   }
-
-  onSubmit (event) {
-    event.preventDefault()
-    const { addStory, currentUser} = this.props
-    const { authorId, title } = event.target
-    const story = {
-      authorId: authorId ? authorId.value : currentUser.id,
-      title: title.value
-    }
-    addStory(story)
-    if (authorId) event.target.author_id.value = ''
-    event.target.title.value = ''
-  }
 }
 
 /* -----------------    CONTAINER     ------------------ */
 
-const mapState = ({ users, stories, currentUser }) => ({ users, stories, currentUser })
+const mapState = ({ stories }) => ({ stories })
 
 const mapDispatch = { addStory }
 
