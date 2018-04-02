@@ -18,10 +18,11 @@ app.use(require('./passport.middleware'))
 
 // "Responding" middleware (may send a response back to client)
 
-app.use('/api', require('../api/api.router'))
+app.use('/api', require('../api'))
+app.use('/auth', require('../auth'))
 
 const validFrontendRoutes = ['/', '/stories', '/users', '/stories/:id', '/users/:id', '/signup', '/login']
-const indexPath = path.join(__dirname, '..', '..', 'browser', 'index.html')
+const indexPath = path.join(__dirname, '..', '..', 'public', 'index.html')
 validFrontendRoutes.forEach((stateRoute) => {
   app.get(stateRoute, (req, res) => {
     res.sendFile(indexPath)

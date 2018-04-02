@@ -1,6 +1,6 @@
 module.exports = {
   // babel-polyfill enables async-await in our client js
-  entry: ['babel-polyfill', './browser/js/app.js'],
+  entry: ['babel-polyfill', './browser/App.js'],
   mode: 'development',
   output: {
     path: __dirname,

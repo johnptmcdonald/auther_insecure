@@ -3,8 +3,8 @@ const toonAvatar = require('cartoon-avatar')
 const Promise = require('bluebird')
 
 const db = require('./server/db')
-const User = require('./server/api/users/user.model')
-const Story = require('./server/api/stories/story.model')
+const User = require('./server/db/user.model')
+const Story = require('./server/db/story.model')
 
 const numUsers = 100
 const numStories = 500
