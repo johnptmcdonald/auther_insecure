@@ -1,8 +1,8 @@
-const router = require('express').Router();
-const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const router = require('express').Router()
+const passport = require('passport')
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
 
-const User = require('../users/user.model');
+const User = require('../users/user.model')
 
 // configuring the strategy (credentials + verification callback)
 passport.use(
@@ -11,32 +11,31 @@ passport.use(
     clientSecret: 'GST6VQnVmhx1YIB1vDXXB3PF',
     callbackURL: '/api/auth/google/verify'
   },
-  function (token, refreshToken, profile, done) {
-    var info = {
+  (token, refreshToken, profile, done) => {
+    const info = {
       name: profile.displayName,
       email: profile.emails[0].value,
       photo: profile.photos ? profile.photos[0].value : undefined
-    };
+    }
+
     User.findOrCreate({
       where: {googleId: profile.id},
       defaults: info
     })
-    .spread(function (user) {
-      done(null, user);
-    })
-    .catch(done);
+      .spread((user) => done(null, user))
+      .catch(done)
   })
-);
+)
 
 // Google authentication and login
-router.get('/', passport.authenticate('google', { scope: 'email' }));
+router.get('/', passport.authenticate('google', { scope: 'email' }))
 
 // handle the callback after Google has authenticated the user
 router.get('/verify',
   passport.authenticate('google', { failureRedirect: '/login' }),
-  function (req, res) {
-    res.redirect(`/users/${req.user.id}`);
+  (req, res) => {
+    res.redirect(`/users/${req.user.id}`)
   }
-);
+)
 
-module.exports = router;
+module.exports = router

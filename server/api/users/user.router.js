@@ -1,60 +1,57 @@
-'use strict';
+const router = require('express').Router()
 
-var router = require('express').Router();
+const HttpError = require('../../utils/HttpError')
+const User = require('./user.model')
 
-var HttpError = require('../../utils/HttpError');
-var User = require('./user.model');
-var Story = require('../stories/story.model');
-
-router.param('id', function (req, res, next, id) {
+router.param('id', (req, res, next, id) => {
   User.findById(id)
-  .then(function (user) {
-    if (!user) throw HttpError(404);
-    req.requestedUser = user;
-    next();
-    return null;
-  })
-  .catch(next);
-});
+    .then((user) => {
+      if (!user) throw HttpError(404)
+      req.requestedUser = user
+      next()
+      return null
+    })
+    .catch(next)
+})
 
-router.get('/', function (req, res, next) {
+router.get('/', (req, res, next) => {
   User.findAll({})
-  .then(function (users) {
-    res.json(users);
-  })
-  .catch(next);
-});
+    .then((users) => {
+      res.json(users)
+    })
+    .catch(next)
+})
 
-router.post('/', function (req, res, next) {
+router.post('/', (req, res, next) => {
   User.create(req.body)
-  .then(function (user) {
-    res.status(201).json(user);
-  })
-  .catch(next);
-});
+    .then((user) => {
+      res.status(201).json(user)
+    })
+    .catch(next)
+})
 
-router.get('/:id', function (req, res, next) {
+router.get('/:id', (req, res, next) => {
   req.requestedUser.reload(User.options.scopes.populated())
-  .then(function (requestedUser) {
-    res.json(requestedUser);
-  })
-  .catch(next);
-});
+    .then((requestedUser) => {
+      res.json(requestedUser)
+    })
+    .catch(next)
+})
 
-router.put('/:id', function (req, res, next) {
+router.put('/:id', (req, res, next) => {
   req.requestedUser.update(req.body)
-  .then(function (user) {
-    res.json(user);
-  })
-  .catch(next);
-});
+    .then((user) => {
+      res.json(user)
+    })
+    .catch(next)
+})
 
-router.delete('/:id', function (req, res, next) {
+router.delete('/:id', (req, res, next) => {
   req.requestedUser.destroy()
-  .then(function () {
-    res.status(204).end();
-  })
-  .catch(next);
-});
+    .then(() => {
+      res.status(204).end()
+    })
+    .catch(next)
+})
 
-module.exports = router;
+module.exports = router

@@ -1,10 +1,8 @@
-'use strict';
+const Sequelize = require('sequelize')
 
-var Sequelize = require('sequelize');
+const db = require('../../_db')
 
-var db = require('../../_db');
-
-var User = db.define('user', {
+const User = db.define('user', {
   name: Sequelize.STRING,
   photo: {
     type: Sequelize.STRING,
@@ -21,9 +19,7 @@ var User = db.define('user', {
     type: Sequelize.BOOLEAN,
     defaultValue: false
   },
-  googleId: Sequelize.STRING,
-  githubId: Sequelize.STRING,
-  twitterId: Sequelize.STRING
+  googleId: Sequelize.STRING
 }, {
   scopes: {
     populated: () => ({
@@ -33,6 +29,6 @@ var User = db.define('user', {
       }]
     })
   }
-});
+})
 
-module.exports = User;
+module.exports = User

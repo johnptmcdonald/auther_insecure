@@ -1,8 +1,6 @@
-'use strict';
+const router = require('express').Router()
+const volleyball = require('volleyball')
 
-var router = require('express').Router();
-var volleyball = require('volleyball');
+router.use(volleyball)
 
-router.use(volleyball);
-
-module.exports = router;
+module.exports = router

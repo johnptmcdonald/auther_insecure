@@ -1,68 +1,65 @@
-'use strict';
+const router = require('express').Router()
 
-var router = require('express').Router();
+const HttpError = require('../../utils/HttpError')
+const Story = require('./story.model')
 
-var HttpError = require('../../utils/HttpError');
-var Story = require('./story.model');
-var User = require('../users/user.model')
-
-router.param('id', function (req, res, next, id) {
+router.param('id', (req, res, next, id) => {
   Story.findById(id)
-  .then(function (story) {
-    if (!story) throw HttpError(404);
-    req.story = story;
-    next();
-    return null;
-  })
-  .catch(next);
-});
+    .then((story) => {
+      if (!story) throw HttpError(404)
+      req.story = story
+      next()
+      return null
+    })
+    .catch(next)
+})
 
-router.get('/', function (req, res, next) {
+router.get('/', (req, res, next) => {
   Story.scope('populated').findAll({
     attributes: { exclude: ['paragraphs'] }
   })
-  .then(function (stories) {
-    res.json(stories);
-  })
-  .catch(next);
-});
+    .then((stories) => {
+      res.json(stories)
+    })
+    .catch(next)
+})
 
-router.post('/', function (req, res, next) {
+router.post('/', (req, res, next) => {
   Story.create(req.body)
-  .then(function (story) {
-    return story.reload(Story.options.scopes.populated());
-  })
-  .then(function (storyIncludingAuthor) {
-    res.status(201).json(storyIncludingAuthor);
-  })
-  .catch(next);
-});
+    .then((story) => {
+      return story.reload(Story.options.scopes.populated())
+    })
+    .then((storyIncludingAuthor) => {
+      res.status(201).json(storyIncludingAuthor)
+    })
+    .catch(next)
+})
 
-router.get('/:id', function (req, res, next) {
+router.get('/:id', (req, res, next) => {
   req.story.reload(Story.options.scopes.populated())
-  .then(function (story) {
-    res.json(story);
-  })
-  .catch(next);
-});
+    .then((story) => {
+      res.json(story)
+    })
+    .catch(next)
+})
 
-router.put('/:id', function (req, res, next) {
+router.put('/:id', (req, res, next) => {
   req.story.update(req.body)
-  .then(function (story) {
-    return story.reload(Story.options.scopes.populated());
-  })
-  .then(function (storyIncludingAuthor) {
-    res.json(storyIncludingAuthor);
-  })
-  .catch(next);
-});
+    .then(function (story) {
+      return story.reload(Story.options.scopes.populated())
+    })
+    .then(function (storyIncludingAuthor) {
+      res.json(storyIncludingAuthor)
+    })
+    .catch(next)
+})
 
-router.delete('/:id', function (req, res, next) {
+router.delete('/:id', (req, res, next) => {
   req.story.destroy()
-  .then(function () {
-    res.status(204).end();
-  })
-  .catch(next);
-});
+    .then(() => {
+      res.status(204).end()
+    })
+    .catch(next)
+})
 
-module.exports = router;
+module.exports = router

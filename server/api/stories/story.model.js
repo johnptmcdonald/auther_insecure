@@ -1,10 +1,8 @@
-'use strict';
+const Sequelize = require('sequelize')
 
-var Sequelize = require('sequelize');
+const db = require('../../_db')
 
-var db = require('../../_db');
-
-var Story = db.define('story', {
+const Story = db.define('story', {
   title: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -23,6 +21,6 @@ var Story = db.define('story', {
       }]
     })
   }
-});
+})
 
-module.exports = Story;
+module.exports = Story

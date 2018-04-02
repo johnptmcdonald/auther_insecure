@@ -1,23 +1,17 @@
-const router = require('express').Router();
-const User = require('../users/user.model');
-// const HttpError = require('../../utils/HttpError');
+const router = require('express').Router()
+const User = require('../users/user.model')
 
 // This marries the original auth code we wrote to Passport.
 // An alternative would be to use the "local strategy" option with Passport.
 
 // check currently-authenticated user, i.e. "who am I?"
-router.get('/', function (req, res, next) {
-  // with Passport:
-  res.send(req.user);
-  // // before, without Passport:
-  // User.findById(req.session.userId)
-  // .then(user => res.json(user))
-  // .catch(next);
-});
+router.get('/', (req, res, next) => {
+  res.send(req.user)
+})
 
 // signup, i.e. "let `me` introduce myself"
-router.post('/', function (req, res, next) {
-  User.findOrCreate({
+router.post('/', async (req, res, next) => {
+  const [user, created] = await User.findOrCreate({
     where: {
       email: req.body.email
     },
@@ -25,51 +19,41 @@ router.post('/', function (req, res, next) {
       password: req.body.password
     }
   })
-  .spread((user, created) => {
-    if (created) {
-      // with Passport:
-      req.logIn(user, function (err) {
-        if (err) return next(err);
-        res.json(user);
-      });
-      // // before, without Passport:
-      // req.session.userId = user.id;
-      // res.json(user);
-    } else {
-      res.sendStatus(401); // this user already exists, you cannot sign up
-    }
-  });
-});
+
+  if (created) {
+    req.logIn(user, (err) => {
+      if (err) return next(err)
+      res.json(user)
+    })
+  } else {
+    res.sendStatus(401) // this user already exists, you cannot sign up
+  }
+})
 
 // login, i.e. "you remember `me`, right?"
-router.put('/', function (req, res, next) {
-  User.findOne({
-    where: req.body // email and password
-  })
-  .then(user => {
+router.put('/', async (req, res, next) => {
+  try {
+    const user = await User.findOne({
+      where: req.body // email and password
+    })
+
     if (!user) {
-      res.sendStatus(401); // no message; good practice to omit why auth fails
+      res.sendStatus(401) // no message good practice to omit why auth fails
     } else {
-      // with Passport:
-      req.logIn(user, function (err) {
-        if (err) return next(err);
-        res.json(user);
-      });
-      // // before, without Passport:
-      // req.session.userId = user.id;
-      // res.json(user);
+      req.logIn(user, (err) => {
+        if (err) return next(err)
+        res.json(user)
+      })
     }
-  })
-  .catch(next);
-});
+  } catch (err) {
+    next(err)
+  }
+})
 
 // logout, i.e. "please just forget `me`"
-router.delete('/', function (req, res, next) {
-  // with Passport
-  req.logOut();
-  // // before, without Passport
-  // delete req.session.userId;
-  res.sendStatus(204);
-});
+router.delete('/', (req, res, next) => {
+  req.logOut()
+  res.sendStatus(204)
+})
 
-module.exports = router;
+module.exports = router

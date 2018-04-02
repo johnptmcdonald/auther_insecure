@@ -1,16 +1,16 @@
-'use strict';
+'use strict'
 
-var app = require('./app');
-var db = require('./db');
+const app = require('./app')
+const db = require('./db')
 
-var port = 8080;
-var server = app.listen(port, function (err) {
-  if (err) throw err;
-  console.log('HTTP server patiently listening on port', port);
+const port = 8080
+const server = app.listen(port, (err) => {
+  if (err) throw err
+  console.log('HTTP server patiently listening on port', port)
   db.sync()
-  .then(function () {
-    console.log('Oh and btw the postgres server is totally connected, too');
-  });
-});
+    .then(() => {
+      console.log('Oh and btw the postgres server is totally connected, too')
+    })
+})
 
-module.exports = server;
+module.exports = server
