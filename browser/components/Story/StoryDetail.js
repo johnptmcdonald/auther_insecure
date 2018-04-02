@@ -109,7 +109,7 @@ const mapState = ({ users, stories, currentUser }, ownProps) => {
 const mapDispatch = (dispatch, ownProps) => ({
   debouncedUpdateStory: _.debounce((...args) => {
     dispatch(updateStory(...args));
-  }, 500) 
+  }, 500)
 });
 
 export default connect(mapState, mapDispatch)(StoryDetail);

@@ -45,10 +45,10 @@ router.get('/:id', (req, res, next) => {
 
 router.put('/:id', (req, res, next) => {
   req.story.update(req.body)
-    .then(function (story) {
+    .then((story) => {
       return story.reload(Story.options.scopes.populated())
     })
-    .then(function (storyIncludingAuthor) {
+    .then((storyIncludingAuthor) => {
       res.json(storyIncludingAuthor)
     })
     .catch(next)
