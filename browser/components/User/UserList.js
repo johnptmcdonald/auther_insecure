@@ -1,159 +1,157 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { addUser } from '../../redux/users';
-import UserItem from './UserItem';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { addUser } from '../../redux/users'
+import UserItem from './UserItem'
 
 /* -----------------    COMPONENT     ------------------ */
 
 class UserList extends Component {
-  constructor(props) {
-    super(props);
+  constructor () {
+    super()
 
     this.state = {
       name: '',
       email: '',
       phone: ''
-    };
+    }
 
-    this.filterUser = this.filterUser.bind(this);
-    this.renderUserSearch = this.renderUserSearch.bind(this);
-    this.renderNewUserWidget = this.renderNewUserWidget.bind(this);
-    this.onNewUserSubmit = this.onNewUserSubmit.bind(this);
+    this.filterUser = this.filterUser.bind(this)
+    this.renderUserSearch = this.renderUserSearch.bind(this)
+    this.renderNewUserWidget = this.renderNewUserWidget.bind(this)
+    this.onNewUserSubmit = this.onNewUserSubmit.bind(this)
   }
 
-  render() {
-    const { currentUser } = this.props;
+  render () {
+    const { currentUser } = this.props
     return (
-      <div className="container">
-        <div className="user-query">
+      <div className='container'>
+        <div className='user-query'>
           { this.renderUserSearch() }
           { currentUser.isAdmin && this.renderNewUserWidget() }
         </div>
         <br />
         <br />
-        <div className="user-list">
-        {
-          this.props.users
-            .filter(this.filterUser)
-            .map(user => <UserItem user={user} key={user.id} />)
-        }
+        <div className='user-list'>
+          {
+            this.props.users
+              .filter(this.filterUser)
+              .map(user => <UserItem user={user} key={user.id} />)
+          }
         </div>
       </div>
-    );
+    )
   }
 
-  renderUserSearch() {
+  renderUserSearch () {
     return (
-      <div className="list-group-item min-content user-item">
-        <div className="media">
-          <div className="media-left media-middle icon-container">
-            <span className="glyphicon glyphicon-search" />
+      <div className='list-group-item min-content user-item'>
+        <div className='media'>
+          <div className='media-left media-middle icon-container'>
+            <span className='glyphicon glyphicon-search' />
           </div>
-          <div className="media-body">
-            <h4 className="media-heading tucked">
+          <div className='media-body'>
+            <h4 className='media-heading tucked'>
               <input
-                type="text"
-                placeholder="Jean Doe"
-                className="form-like"
+                type='text'
+                placeholder='Jean Doe'
+                className='form-like'
                 onChange={evt => this.setState({ name: evt.target.value })}
               />
             </h4>
-            <h5 className="tucked">
+            <h5 className='tucked'>
               <input
-                 type="email"
-                 placeholder="email@website.com"
-                 className="form-like"
-                 onChange={evt => this.setState({ email: evt.target.value })}
+                type='email'
+                placeholder='email@website.com'
+                className='form-like'
+                onChange={evt => this.setState({ email: evt.target.value })}
               />
             </h5>
-            <h5 className="tucked">
+            <h5 className='tucked'>
               <input
-                type="tel"
-                placeholder="(555) 555-5555"
-                className="form-like"
+                type='tel'
+                placeholder='(555) 555-5555'
+                className='form-like'
                 onChange={evt => this.setState({ phone: evt.target.value })}
               />
             </h5>
           </div>
         </div>
       </div>
-    );
+    )
   }
 
-  filterUser(story) {
-    const nameMatch  = new RegExp(this.state.name, 'i');
-    const emailMatch = new RegExp(this.state.email, 'i');
-    const phoneMatch = new RegExp(this.state.phone, 'i');
+  filterUser (story) {
+    const nameMatch  = new RegExp(this.state.name, 'i')
+    const emailMatch = new RegExp(this.state.email, 'i')
+    const phoneMatch = new RegExp(this.state.phone, 'i')
 
     return nameMatch.test(story.name)
         && emailMatch.test(story.email)
-        && phoneMatch.test(story.phone);
+        && phoneMatch.test(story.phone)
   }
 
-
-  renderNewUserWidget() {
+  renderNewUserWidget () {
     return (
-      <div className="list-group-item min-content user-item">
-        <form className="media" onSubmit={this.onNewUserSubmit}>
-          <div className="media-left media-middle icon-container">
+      <div className='list-group-item min-content user-item'>
+        <form className='media' onSubmit={this.onNewUserSubmit}>
+          <div className='media-left media-middle icon-container'>
             <button
-              type="submit"
-              className="glyphicon glyphicon-plus clickable"
+              type='submit'
+              className='glyphicon glyphicon-plus clickable'
             />
           </div>
-          <div className="media-body">
-            <h4 className="media-heading tucked">
+          <div className='media-body'>
+            <h4 className='media-heading tucked'>
               <input
-                name="name"
-                type="text"
+                name='name'
+                type='text'
                 required
-                placeholder="Jean Doe"
-                className="form-like"
+                placeholder='Jean Doe'
+                className='form-like'
               />
             </h4>
-            <h5 className="tucked">
+            <h5 className='tucked'>
               <input
-                name="email"
-                type="email"
+                name='email'
+                type='email'
                 required
-                placeholder="email@website.com"
-                className="form-like"
+                placeholder='email@website.com'
+                className='form-like'
               />
             </h5>
-            <h5 className="tucked">
+            <h5 className='tucked'>
               <input
-                name="phone"
-                type="tel"
-                placeholder="(555) 555-5555"
-                className="form-like"
+                name='phone'
+                type='tel'
+                placeholder='(555) 555-5555'
+                className='form-like'
               />
             </h5>
           </div>
         </form>
       </div>
-    );
+    )
   }
 
-  onNewUserSubmit(event) {
-    event.preventDefault();
+  onNewUserSubmit (event) {
+    event.preventDefault()
     const user = {
       name: event.target.name.value,
       email: event.target.email.value,
-      phone: event.target.phone.value,
-    };
-    this.props.addUser(user);
+      phone: event.target.phone.value
+    }
+    this.props.addUser(user)
     // clear the inputs
-    event.target.name.value = '';
-    event.target.email.value = '';
-    event.target.phone.value = '';
+    event.target.name.value = ''
+    event.target.email.value = ''
+    event.target.phone.value = ''
   }
 }
 
 /* -----------------    CONTAINER     ------------------ */
 
-const mapState = ({ users, currentUser }) => ({ currentUser, users });
+const mapState = ({ users, currentUser }) => ({ currentUser, users })
 
-const mapDispatch = { addUser };
+const mapDispatch = { addUser }
 
-export default connect(mapState, mapDispatch)(UserList);
-
+export default connect(mapState, mapDispatch)(UserList)

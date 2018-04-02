@@ -1,78 +1,77 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import UserItem from './UserItem';
-import StoryItem from '../Story/StoryItem';
-import { addStory } from '../../redux/stories';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import UserItem from './UserItem'
+import StoryItem from '../Story/StoryItem'
+import { addStory } from '../../redux/stories'
 
 /* -----------------    COMPONENT     ------------------ */
 
 class UserDetail extends Component {
-
-  constructor(props) {
-    super(props);
-    this.onSubmit = this.onSubmit.bind(this);
+  constructor () {
+    super()
+    this.onSubmit = this.onSubmit.bind(this)
   }
 
-  render() {
-    const { user, stories, currentUser } = this.props;
-    if (!user) return <div />  // the user id is invalid or data isn't loaded yet
-    const authorized = currentUser && (currentUser.isAdmin || currentUser.id === user.id);
+  render () {
+    const { user, stories, currentUser } = this.props
+    if (!user) return <div /> // the user id is invalid or data isn't loaded yet
+    const authorized = currentUser && (currentUser.isAdmin || currentUser.id === user.id)
     return (
-      <div className="container">
+      <div className='container'>
         <UserItem user={user} />
-        <div className="panel panel-warning">
-          <div className="panel-heading">
-            <h2 className="panel-title large-font">stories</h2>
+        <div className='panel panel-warning'>
+          <div className='panel-heading'>
+            <h2 className='panel-title large-font'>stories</h2>
           </div>
-          <ul className="list-group">
+          <ul className='list-group'>
             { authorized &&
-              <form className="list-group-item story-item" onSubmit={this.onSubmit}>
+              <form className='list-group-item story-item' onSubmit={this.onSubmit}>
                 <input
-                  name="title"
-                  type="text"
-                  className="form-like"
+                  name='title'
+                  type='text'
+                  className='form-like'
                   required
-                  placeholder="Story Title"
+                  placeholder='Story Title'
                 />
-                <button type="submit" className="btn btn-warning btn-xs">
-                  <span className="glyphicon glyphicon-plus" />
+                <button type='submit' className='btn btn-warning btn-xs'>
+                  <span className='glyphicon glyphicon-plus' />
                 </button>
               </form>
             }
             {
               stories
-              .filter(story => story.author_id === user.id)
-              .map(story => <StoryItem story={story} key={story.id} />)
+                .filter(story => story.author_id === user.id)
+                .map(story => <StoryItem story={story} key={story.id} />)
             }
           </ul>
         </div>
       </div>
-    );
+    )
   }
 
-  onSubmit(event) {
-    event.preventDefault();
-    const { addStory, user } = this.props;
+  onSubmit (event) {
+    event.preventDefault()
+    const { addStory, user } = this.props
     const story = {
       title: event.target.title.value,
       author_id: user.id
-    };
-    addStory(story);
-    event.target.title.value = '';
+    }
+    addStory(story)
+    event.target.title.value = ''
   }
 }
 
 /* -----------------    CONTAINER     ------------------ */
 
 const mapState = ({ users, stories, currentUser }, ownProps) => {
-  const paramId = Number(ownProps.match.params.id);
+  const paramId = Number(ownProps.match.params.id)
   return {
     user: users.find(user => user.id === paramId),
     stories,
     currentUser
-  };
-};
+  }
+}
 
-const mapDispatch = { addStory };
+const mapDispatch = { addStory }
 
-export default connect(mapState, mapDispatch)(UserDetail);
+export default connect(mapState, mapDispatch)(UserDetail)
