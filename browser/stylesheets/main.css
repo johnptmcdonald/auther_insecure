@@ -27,7 +27,7 @@ select {
   font-size: 0.5em; }
 
 .clickable {
-  cursor: pointer; 
+  cursor: pointer;
   border: none;
 }
 
@@ -148,7 +148,7 @@ body {
       width: 100%; } }
 
 [contenteditable] {
-  line-height: 1.4em; 
+  line-height: 1.4em;
   white-space: pre-wrap;
 }
 
@@ -169,30 +169,30 @@ body {
 
 input {
   border-style: solid;
-  line-height: 1.4em; 
+  line-height: 1.4em;
 }
 
 input:placeholder-shown::before {
   color: #bbb;
-  cursor: text; 
+  cursor: text;
 }
 
 input:placeholder-shown:hover::before {
-  color: #fff; 
+  color: #fff;
 }
 
 input.form-like {
   border: none;
   border-bottom: 1px dashed #000;
-  background-color: transparent; 
+  background-color: transparent;
 }
 
 input.form-like:focus {
-    border-color: transparent; 
+    border-color: transparent;
 }
 
 input.form-like[disabled] {
-    border-color: transparent; 
+    border-color: transparent;
 }
 
 .home {
