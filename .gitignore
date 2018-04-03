@@ -1,6 +1,7 @@
 # project-specific folders and files
 build/
-public/
+public/bundle.js
+public/bundle.js.map
 
 # installed packages (better: `npm install` / `bower install`)
 node_modules
