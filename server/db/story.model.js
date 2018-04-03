@@ -11,15 +11,6 @@ const Story = db.define('story', {
     type: Sequelize.TEXT,
     defaultValue: ''
   }
-}, {
-  scopes: {
-    populated: () => ({
-      include: [{
-        model: db.model('user'),
-        as: 'author'
-      }]
-    })
-  }
 })
 
 module.exports = Story

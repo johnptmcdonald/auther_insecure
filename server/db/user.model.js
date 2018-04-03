@@ -20,15 +20,6 @@ const User = db.define('user', {
     defaultValue: false
   },
   googleId: Sequelize.STRING
-}, {
-  scopes: {
-    populated: () => ({
-      include: [{
-        model: db.model('story'),
-        attributes: {exclude: ['paragraphs']}
-      }]
-    })
-  }
 })
 
 module.exports = User

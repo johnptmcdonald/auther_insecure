@@ -2,7 +2,10 @@ const router = require('express').Router()
 
 const HttpError = require('../utils/HttpError')
 const Story = require('../db/story.model')
+const User = require('../db/user.model')
 
+// for any /stories/:id routes, this piece of middleware
+// will be executed, and put the story on `req.story`
 router.param('id', (req, res, next, id) => {
   Story.findById(id)
     .then((story) => {
@@ -15,7 +18,12 @@ router.param('id', (req, res, next, id) => {
 })
 
 router.get('/', (req, res, next) => {
-  Story.scope('populated').findAll()
+  Story.findAll({
+    include: [{
+      model: User,
+      as: 'author'
+    }]
+  })
     .then((stories) => {
       res.json(stories)
     })
@@ -25,7 +33,12 @@ router.get('/', (req, res, next) => {
 router.post('/', (req, res, next) => {
   Story.create(req.body)
     .then((story) => {
-      return story.reload(Story.options.scopes.populated())
+      return story.reload({
+        include: [{
+          model: User,
+          as: 'author'
+        }]
+      })
     })
     .then((storyIncludingAuthor) => {
       res.status(201).json(storyIncludingAuthor)
@@ -34,7 +47,12 @@ router.post('/', (req, res, next) => {
 })
 
 router.get('/:id', (req, res, next) => {
-  req.story.reload(Story.options.scopes.populated())
+  req.story.reload({
+    include: [{
+      model: User,
+      as: 'author'
+    }]
+  })
     .then((story) => {
       res.json(story)
     })
@@ -44,7 +62,12 @@ router.get('/:id', (req, res, next) => {
 router.put('/:id', (req, res, next) => {
   req.story.update(req.body)
     .then((story) => {
-      return story.reload(Story.options.scopes.populated())
+      return story.reload({
+        include: [{
+          model: User,
+          as: 'author'
+        }]
+      })
     })
     .then((storyIncludingAuthor) => {
       res.json(storyIncludingAuthor)

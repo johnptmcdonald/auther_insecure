@@ -2,7 +2,10 @@ const router = require('express').Router()
 
 const HttpError = require('../utils/HttpError')
 const User = require('../db/user.model')
+const Story = require('../db/story.model')
 
+// for any /users/:id routes, this piece of middleware
+// will be executed, and put the user on `req.requestedUser`
 router.param('id', (req, res, next, id) => {
   User.findById(id)
     .then((user) => {
@@ -31,7 +34,12 @@ router.post('/', (req, res, next) => {
 })
 
 router.get('/:id', (req, res, next) => {
-  req.requestedUser.reload(User.options.scopes.populated())
+  req.requestedUser.reload({
+    include: [{
+      model: Story,
+      attributes: {exclude: ['paragraphs']}
+    }]
+  })
     .then((requestedUser) => {
       res.json(requestedUser)
     })
