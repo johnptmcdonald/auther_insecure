@@ -12,25 +12,28 @@ class StoryDetail extends Component {
     super(props)
 
     this.state = {
-      story: props.story
+      story: {}
     }
 
     this.onStoryUpdate = this.onStoryUpdate.bind(this)
     this.renderRawHTML = this.renderRawHTML.bind(this)
   }
 
-  componentWillReceiveProps (newProps, oldProps) {
-    if (newProps.story !== oldProps.story) {
-      this.setState({
-        story: newProps.story
-      })
+  static getDerivedStateFromProps (props, state) {
+    console.log(props, state)
+    if (props.story.id !== state.story.id) {
+      return {
+        story: props.story
+      }
     }
+
+    return null
   }
 
   render () {
     const { users, currentUser } = this.props
     const story = this.state.story
-    if (!story) return <div /> // the story id is invalid or the data isnt loaded yet
+    if (!story.id) return <div /> // the story id is invalid or the data isnt loaded yet
     const authorized = currentUser && (currentUser.isAdmin || currentUser.id === story.author_id)
     return (
       <div className='container story-container'>
@@ -103,7 +106,7 @@ class StoryDetail extends Component {
 
 const mapState = ({ users, stories, currentUser }, ownProps) => {
   const paramId = Number(ownProps.match.params.id)
-  const story = stories.find(story => story.id === paramId)
+  const story = stories.find(story => story.id === paramId) || {}
   return { story, users, currentUser }
 }
 
