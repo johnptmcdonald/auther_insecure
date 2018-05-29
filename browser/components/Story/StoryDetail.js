@@ -20,7 +20,6 @@ class StoryDetail extends Component {
   }
 
   static getDerivedStateFromProps (props, state) {
-    console.log(props, state)
     if (props.story.id !== state.story.id) {
       return {
         story: props.story
