@@ -1,7 +1,16 @@
-# auther
+# Auther
 
-After cloning or downloading, don't forget to install with `npm install`
+## Setup
 
-Once you've ensured that `postgres` is running (e.g. by trying to start a `psql` shell), you can execute `npm run seed` to seed the database with fake data.
+### MacOS/Linux
 
-Finally, fire it up with `npm start` and go to http://127.0.0.1:8080/.
+* `npm install`
+* `npm start`
+* Open another terminal window; from there, `npm run seed` to seed the database
+
+### Windows
+
+* `npm install`
+* `npm run build-watch` to start the webpack process
+* Open another terminal window; from there, `npm run start-server` to start the server process
+* Open another terminal window; from there, `npm run seed` to seed the database
