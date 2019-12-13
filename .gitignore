@@ -2,6 +2,7 @@
 build/
 public/bundle.js
 public/bundle.js.map
+secrets.js
 
 # installed packages (better: `npm install` / `bower install`)
 node_modules

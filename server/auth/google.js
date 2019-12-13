@@ -4,11 +4,18 @@ const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
 
 const User = require('../db/user.model')
 
+if(process.env.NODE_ENV !== 'production'){
+
+  console.log("******\n\n\n", process.env, process.env.CLIENT_ID)
+  require('../../secrets.js')
+}
+
+
 // configuring the strategy (credentials + verification callback)
 passport.use(
   new GoogleStrategy({
-    clientID: '238524570915-ivf9lnhm9bsfq13cle5ap8s28d4lmhrp.apps.googleusercontent.com',
-    clientSecret: 'GST6VQnVmhx1YIB1vDXXB3PF',
+    clientID: process.env.CLIENT_ID,
+    clientSecret: process.env.GOOGLE_SECRET,
     callbackURL: '/auth/google/verify'
   },
   (token, refreshToken, profile, done) => {
